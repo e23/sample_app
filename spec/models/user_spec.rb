@@ -100,8 +100,18 @@ describe User do
 			user_with_same_email = @user.dup
 			user_with_same_email.email = @user.email.upcase
 			user_with_same_email.save
-    end
+    	end
 
-    it { should_not be_valid }
-  end
+    	it { should_not be_valid }
+	end
+
+	describe "email addresses with mix case" do
+  		let(:mixed_case_email) { "foO@ExAmPlE.cOm" }
+
+  		it "should be saved in all lower case" do
+  			@user.email = mixed_case_email
+  			@user.save
+  			@user.reload.email.should == mixed_case_email.downcase
+  		end
+  	end
 end
